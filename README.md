@@ -10,3 +10,4 @@
 
 - [Text editor exp](https://github.com/KaimingTao/text-editors)
 - [Coding toolkit](https://github.com/KaimingTao/code-ocean)
+- [Tools for taking notes](https://github.com/KaimingTao/noting)
