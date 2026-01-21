@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Text Compare Studio</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Space+Grotesk:wght@400;500;600&display=swap");
+
+      :root {
+        --bg: #0f1b1b;
+        --bg-soft: #142526;
+        --panel: #f6f1e9;
+        --panel-soft: #efe8de;
+        --ink: #122021;
+        --muted: #4b5b5b;
+        --accent: #f48c06;
+        --accent-2: #3a7ca5;
+        --add: #d8f3dc;
+        --remove: #ffe5e5;
+        --shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+        --radius: 18px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Space Grotesk", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 12% 20%, rgba(244, 140, 6, 0.15), transparent 45%),
+          radial-gradient(circle at 90% 10%, rgba(58, 124, 165, 0.2), transparent 45%),
+          linear-gradient(140deg, #0b1414, #122020 45%, #0f1b1b 100%);
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        padding: 48px 24px 64px;
+      }
+
+      .app {
+        width: min(1200px, 100%);
+        display: grid;
+        gap: 24px;
+      }
+
+      header {
+        color: #f7efe4;
+        display: grid;
+        gap: 8px;
+      }
+
+      header h1 {
+        margin: 0;
+        font-family: "Fraunces", serif;
+        font-size: clamp(2rem, 4vw, 3.25rem);
+        letter-spacing: -0.02em;
+      }
+
+      header p {
+        margin: 0;
+        color: rgba(247, 239, 228, 0.8);
+        font-size: 1rem;
+        max-width: 720px;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      button {
+        border: none;
+        background: var(--accent);
+        color: #18120b;
+        font-weight: 600;
+        padding: 12px 18px;
+        border-radius: 999px;
+        cursor: pointer;
+        box-shadow: 0 12px 24px rgba(244, 140, 6, 0.25);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 16px 28px rgba(244, 140, 6, 0.35);
+      }
+
+      .badge {
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(247, 239, 228, 0.12);
+        color: #f7efe4;
+        font-size: 0.9rem;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .workspace {
+        display: grid;
+        gap: 24px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+
+      .panel {
+        background: var(--panel);
+        border-radius: var(--radius);
+        padding: 18px;
+        box-shadow: var(--shadow);
+        display: grid;
+        gap: 12px;
+        min-height: 360px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .panel::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: var(--radius);
+        border: 1px solid rgba(18, 32, 33, 0.08);
+        pointer-events: none;
+      }
+
+      .panel h2 {
+        margin: 0;
+        font-family: "Fraunces", serif;
+        font-size: 1.2rem;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 220px;
+        border: none;
+        border-radius: 14px;
+        padding: 14px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 0.95rem;
+        background: var(--panel-soft);
+        color: var(--ink);
+        resize: vertical;
+        outline: none;
+        transition: box-shadow 0.2s ease;
+      }
+
+      textarea:focus {
+        box-shadow: 0 0 0 3px rgba(58, 124, 165, 0.25);
+      }
+
+      .diff {
+        background: #fffaf3;
+        border-radius: 14px;
+        padding: 14px;
+        min-height: 220px;
+        overflow: auto;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        white-space: pre-wrap;
+      }
+
+      .legend {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .swatch {
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
+        display: inline-block;
+      }
+
+      .add {
+        background: var(--add);
+      }
+
+      .remove {
+        background: var(--remove);
+      }
+
+      .diff del {
+        background: var(--remove);
+        text-decoration: line-through;
+        padding: 0 3px;
+        border-radius: 4px;
+      }
+
+      .diff ins {
+        background: var(--add);
+        text-decoration: none;
+        padding: 0 3px;
+        border-radius: 4px;
+      }
+
+      .fade-in {
+        animation: fadeIn 0.6s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 720px) {
+        body {
+          padding: 32px 16px 48px;
+        }
+
+        .panel {
+          padding: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="fade-in">
+        <h1>Text Compare Studio</h1>
+        <p>
+          Paste two versions of text and see differences highlighted instantly.
+          Adds appear in green, removals in red with strike-through.
+        </p>
+        <div class="controls">
+          <button type="button" id="compareBtn">Compare</button>
+          <span class="badge" id="stats">0 additions • 0 removals</span>
+        </div>
+      </header>
+
+      <section class="workspace fade-in" style="animation-delay: 0.1s;">
+        <div class="panel">
+          <h2>Original</h2>
+          <textarea id="textA" placeholder="Paste the first text here"></textarea>
+          <div class="legend">
+            <span><i class="swatch remove"></i>Removed</span>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Updated</h2>
+          <textarea id="textB" placeholder="Paste the second text here"></textarea>
+          <div class="legend">
+            <span><i class="swatch add"></i>Added</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace fade-in" style="animation-delay: 0.2s;">
+        <div class="panel">
+          <h2>Differences (Original)</h2>
+          <div id="diffA" class="diff" aria-live="polite"></div>
+        </div>
+        <div class="panel">
+          <h2>Differences (Updated)</h2>
+          <div id="diffB" class="diff" aria-live="polite"></div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const textA = document.getElementById("textA");
+      const textB = document.getElementById("textB");
+      const diffA = document.getElementById("diffA");
+      const diffB = document.getElementById("diffB");
+      const stats = document.getElementById("stats");
+      const compareBtn = document.getElementById("compareBtn");
+
+      const tokenize = (value) => value.split(/(\s+)/);
+
+      const buildLcsTable = (aTokens, bTokens) => {
+        const rows = aTokens.length + 1;
+        const cols = bTokens.length + 1;
+        const table = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+        for (let i = 1; i < rows; i += 1) {
+          for (let j = 1; j < cols; j += 1) {
+            if (aTokens[i - 1] === bTokens[j - 1]) {
+              table[i][j] = table[i - 1][j - 1] + 1;
+            } else {
+              table[i][j] = Math.max(table[i - 1][j], table[i][j - 1]);
+            }
+          }
+        }
+
+        return table;
+      };
+
+      const diffTokens = (aTokens, bTokens) => {
+        const table = buildLcsTable(aTokens, bTokens);
+        let i = aTokens.length;
+        let j = bTokens.length;
+        const ops = [];
+
+        while (i > 0 || j > 0) {
+          if (i > 0 && j > 0 && aTokens[i - 1] === bTokens[j - 1]) {
+            ops.push({ type: "equal", value: aTokens[i - 1] });
+            i -= 1;
+            j -= 1;
+          } else if (j > 0 && (i === 0 || table[i][j - 1] >= table[i - 1]?.[j])) {
+            ops.push({ type: "add", value: bTokens[j - 1] });
+            j -= 1;
+          } else if (i > 0) {
+            ops.push({ type: "remove", value: aTokens[i - 1] });
+            i -= 1;
+          }
+        }
+
+        return ops.reverse();
+      };
+
+      const renderDiff = (ops, target, mode) => {
+        let html = "";
+        ops.forEach((op) => {
+          if (op.type === "equal") {
+            html += op.value;
+            return;
+          }
+
+          if (mode === "original" && op.type === "remove") {
+            html += `<del>${op.value}</del>`;
+            return;
+          }
+
+          if (mode === "updated" && op.type === "add") {
+            html += `<ins>${op.value}</ins>`;
+            return;
+          }
+
+          if (mode === "original" && op.type === "add") {
+            return;
+          }
+
+          if (mode === "updated" && op.type === "remove") {
+            return;
+          }
+        });
+
+        target.innerHTML = html || "<span class=\"muted\">No differences yet.</span>";
+      };
+
+      const updateDiff = () => {
+        const aTokens = tokenize(textA.value);
+        const bTokens = tokenize(textB.value);
+        const ops = diffTokens(aTokens, bTokens);
+
+        let addCount = 0;
+        let removeCount = 0;
+        ops.forEach((op) => {
+          if (op.type === "add") addCount += 1;
+          if (op.type === "remove") removeCount += 1;
+        });
+
+        renderDiff(ops, diffA, "original");
+        renderDiff(ops, diffB, "updated");
+        stats.textContent = `${addCount} additions \u2022 ${removeCount} removals`;
+      };
+
+      let debounceId = null;
+      const scheduleDiff = () => {
+        window.clearTimeout(debounceId);
+        debounceId = window.setTimeout(updateDiff, 150);
+      };
+
+      compareBtn.addEventListener("click", updateDiff);
+      textA.addEventListener("input", scheduleDiff);
+      textB.addEventListener("input", scheduleDiff);
+
+      updateDiff();
+    </script>
+  </body>
+</html>

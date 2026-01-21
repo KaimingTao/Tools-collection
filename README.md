@@ -4,7 +4,7 @@
 
 - [Merge images vertically](./src/2026-01-20/merge_images.py)
 - [Create short video from text, iphone size](https://github.com/KaimingTao/quick-card-video)
-
+- [Online text diff, for writing](./src/2026-01-20_2/index.html)
 
 ## On going
 
