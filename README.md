@@ -3,7 +3,7 @@
 ## Web applications
 
 - [URL decoder](https://kaimingtao.github.io/Tools-collection/url-decoder/)
-- [Online text diff, for writing](https://kaimingtao.github.io/Tools-collection/text-compare/)
+- [Online text diff, for anything](https://kaimingtao.github.io/Tools-collection/text-compare/)
 - [Image cropper](https://kaimingtao.github.io/Tools-collection/image-cropper/)
 
 ## Scripts
