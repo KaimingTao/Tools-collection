@@ -1,0 +1,120 @@
+:root {
+  --bg1: #f4f1e8;
+  --bg2: #dceaf2;
+  --panel: #ffffffcc;
+  --ink: #1d2630;
+  --accent: #0077b6;
+  --accent-dark: #005f91;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: linear-gradient(160deg, var(--bg1), var(--bg2));
+  min-height: 100vh;
+}
+
+.app {
+  width: min(980px, 92vw);
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: var(--panel);
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  box-shadow: 0 12px 30px #0000001a;
+}
+
+h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+}
+
+.drop-zone {
+  border: 2px dashed #5f7894;
+  border-radius: 14px;
+  padding: 1.4rem;
+  text-align: center;
+  transition: 0.2s ease;
+  background: #ffffff88;
+}
+
+.drop-zone.dragover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  background: #ebf7ff;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 0.65rem 1rem;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: var(--accent-dark);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.controls {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.8rem;
+  align-items: end;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #9cb0c4;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.canvas-wrap {
+  margin-top: 1rem;
+  border-radius: 12px;
+  overflow: auto;
+  background: #fbfdff;
+  border: 1px solid #ccd8e5;
+  min-height: 180px;
+}
+
+canvas {
+  display: block;
+  max-width: 100%;
+  touch-action: none;
+}
+
+.status {
+  min-height: 1.25rem;
+  margin-top: 0.8rem;
+  font-size: 0.92rem;
+}
+
+@media (max-width: 640px) {
+  .app {
+    margin: 1rem auto;
+    padding: 1rem;
+  }
+}

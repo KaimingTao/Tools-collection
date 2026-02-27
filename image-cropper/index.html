@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Cropper</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <h1>Image Cropper</h1>
+
+      <section id="dropZone" class="drop-zone" aria-label="Upload image drop zone">
+        <input id="fileInput" type="file" accept="image/*" hidden />
+        <p><strong>Drag & drop an image</strong></p>
+        <p>or</p>
+        <button id="browseBtn" type="button">Browse File</button>
+      </section>
+
+      <section class="controls" aria-label="Crop controls">
+        <label>
+          Crop X (px)
+          <input id="cropX" type="number" min="0" value="0" />
+        </label>
+        <label>
+          Crop Y (px)
+          <input id="cropY" type="number" min="0" value="0" />
+        </label>
+        <label>
+          Crop Width (px)
+          <input id="cropWidth" type="number" min="1" value="300" />
+        </label>
+        <label>
+          Crop Height (px)
+          <input id="cropHeight" type="number" min="1" value="300" />
+        </label>
+        <button id="downloadBtn" type="button" disabled>Download Cropped Image</button>
+      </section>
+
+      <section class="canvas-wrap" aria-label="Image crop area">
+        <canvas id="canvas"></canvas>
+      </section>
+
+      <p id="status" class="status" role="status"></p>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
