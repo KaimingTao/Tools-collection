@@ -1,11 +1,16 @@
 # Tools-collection
 
+## Web applications
+
+- [URL decoder](https://kaimingtao.github.io/Tools-collection/url-decoder/)
+- [Online text diff, for writing](https://kaimingtao.github.io/Tools-collection/text-compare/)
+- [Image cropper](https://kaimingtao.github.io/Tools-collection/image-cropper/)
+
 ## Scripts
 
-- [URL decoder](https://kaimingtao.github.io/Tools-collection/src/2021-04-01/url-decoder/)
 - [Merge images vertically](./src/2026-01-20/merge_images.py)
 - [Create short video from text, iphone size](https://github.com/KaimingTao/quick-card-video)
-- [Online text diff, for writing](https://kaimingtao.github.io/Tools-collection/src/2026-01-20_2/index.html)
+
 - [Update all local github repositories to latest version](./src/2026-01-24/up_to_date.py)
 - [Clone all github repos](./src/2026-01-26/clone_github.py)
 
